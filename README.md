@@ -16,6 +16,7 @@ A simple interface to control an USB-connected Android phone trough ADB, automat
 - Various ADB commands for networking
 - Various other ADB commands 
 - Shizuku starting command
+- SCRCPY supported
 - Stop current command (equivalent Ctrl+C)
 
 
