@@ -11,6 +11,7 @@ at all with Tkinter and ADB-to-Python linking. It did work pretty well and i do 
 imagined it.
 -- Suitable for commercial use? : Not for commercial use, just for personal use and to help others.
 -- Websites used: 
+-> https://developer.android.com/tools/releases/platform-tools?hl=fr
 -> https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
 -> https://developer.android.com/tools/adb?hl=fr
 -> https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://gist.github.com/Pulimet/5013acf2cd5b28e55036c82c91bd56d8&ved=2ahUKEwiR-oup_J6OAxWLcKQEHePBLbIQFnoECAoQAQ&usg=AOvVaw0QtLJ20OqCl3S4BR0S4BVe
@@ -122,7 +123,7 @@ def ping_url_prompt():
 
 
 def launch_scrcpy():
-    scrcpy_path = r""C:\\ADB\scrcpy-win64-v3.3.1\scrcpy.exe""
+    scrcpy_path = r"C:\\ADB\scrcpy-win64-v3.3.1\scrcpy.exe""
     subprocess.Popen(scrcpy_path)
 
 
@@ -160,6 +161,10 @@ root.geometry("512x512")
 server_menu = tk.Menu(root, tearoff=0)
 server_menu.add_command(label="Start", command=lambda: run_adb_command("start-server"))
 server_menu.add_command(label="Kill", command=lambda: run_adb_command("kill-server"))
+server_menu.add_command(label="Reconnect (Host side)", command=lambda: run_adb_command("reconnect"))
+server_menu.add_command(label="Reconnect (Device side)", command=lambda: run_adb_command("reconnect device"))
+server_menu.add_command(label="Attach device", command=lambda: run_adb_command("attach"))
+server_menu.add_command(label="Detach device", command=lambda: run_adb_command("detach"))
 
 def show_server_menu(event):
     server_menu.tk_popup(event.x_root, event.y_root)
@@ -174,6 +179,9 @@ btn_server.bind("<Button-1>", show_server_menu)
 device_menu = tk.Menu(root, tearoff=0)
 device_menu.add_command(label="Devices", command=lambda: run_adb_command("devices -l"))
 device_menu.add_command(label="Serial number", command=lambda: run_adb_command("get-serialno"))
+device_menu.add_command(label="State", command=lambda: run_adb_command("get-state"))
+device_menu.add_command(label="Android version", command=lambda: run_adb_command("shell getprop ro.build.version.release"))
+device_menu.add_command(label="Devpath", command=lambda: run_adb_command("get-devpath"))
 device_menu.add_command(label="IMEI", command=lambda: run_adb_command("shell dumpsys iphonesybinfo"))
 device_menu.add_command(label="Battery", command=lambda: run_adb_command("shell dumpsys battery"))
 device_menu.add_command(label="Screen resolution", command=lambda: run_adb_command("shell wm size"))
