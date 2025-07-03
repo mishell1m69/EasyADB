@@ -219,8 +219,7 @@ device_menu.add_command(label="Serial number", command=lambda: run_adb_command("
 device_menu.add_command(label="State", command=lambda: run_adb_command("get-state"))
 device_menu.add_command(label="Android version", command=lambda: run_adb_command("shell getprop ro.build.version.release"))
 device_menu.add_command(label="Devpath", command=lambda: run_adb_command("get-devpath"))
-device_menu.add_command(label="IMEI", command=lambda: run_adb_command("shell dumpsys iphonesybinfo"))
-device_menu.add_command(label="Battery", command=lambda: run_adb_command("shell dumpsys battery"))
+device_menu.add_command(label="IMEI", command=lambda: run_adb_command("shell service call iphonesubinfo 4 | cut -c 52-66 | tr -d '.[:space:]'"))
 device_menu.add_command(label="Screen resolution", command=lambda: run_adb_command("shell wm size"))
 device_menu.add_command(label="Features", command=lambda: run_adb_command("shell pm list features"))
 device_menu.add_command(label="Services", command=lambda: run_adb_command("shell service list"))
@@ -256,10 +255,10 @@ btn_logcat.bind("<Button-1>", show_logcat_menu)
 
 
 # NETWORK --------------------------------------------------------------------------------------------------------
-# Menu forr Network
+# Menu for Network
 network_menu = tk.Menu(root, tearoff=0)
 network_menu.add_command(label="Show IpV4-6/Interfaces", command=lambda: run_adb_command("shell ip a"))
-network_menu.add_command(label="Netstat", command=lambda: run_adb_command("shell netstat"))
+network_menu.add_command(label="Netstat", command=lambda: run_adb_command("shell dumpsys netstat"))
 network_menu.add_command(label="Ip route", command=lambda: run_adb_command("shell ip route  "))
 network_menu.add_command(label="Dumpsys Wi-Fi", command=lambda: run_adb_command("shell dumpsys wifi"))
 network_menu.add_command(label="Wi-Fi ON", command=lambda: run_adb_command("shell svc wifi enable"))
@@ -275,6 +274,39 @@ def show_network_menu(event):
 btn_network = tk.Button(root, text="Network", width=25, fg="green")
 btn_network.pack(pady=10)
 btn_network.bind("<Button-1>", show_network_menu)
+
+
+# DUMPSYS --------------------------------------------------------------------------------------------------------
+# Menu for Dumpsys
+dumpsys_menu = tk.Menu(root, tearoff=0)
+dumpsys_menu.add_command(label="Process Manager", command=lambda: run_adb_command("shell dumpsys ProcessManager"))
+dumpsys_menu.add_command(label="Account", command=lambda: run_adb_command("shell dumpsys account"))
+dumpsys_menu.add_command(label="Activity", command=lambda: run_adb_command("shell dumpsys activity"))
+dumpsys_menu.add_command(label="ADB", command=lambda: run_adb_command("shell dumpsys adb"))
+dumpsys_menu.add_command(label="Audio", command=lambda: run_adb_command("shell dumpsys audio"))
+dumpsys_menu.add_command(label="Battery", command=lambda: run_adb_command("shell dumpsys battery"))
+dumpsys_menu.add_command(label="Battery Properties", command=lambda: run_adb_command("shell dumpsys batteryproperties"))
+dumpsys_menu.add_command(label="Battery Stats", command=lambda: run_adb_command("shell dumpsys batterystats"))
+dumpsys_menu.add_command(label="CPU Info", command=lambda: run_adb_command("shell dumpsys cpuinfo"))
+dumpsys_menu.add_command(label="Display", command=lambda: run_adb_command("shell dumpsys display"))
+dumpsys_menu.add_command(label="GPU", command=lambda: run_adb_command("shell dumpsys gpu"))
+dumpsys_menu.add_command(label="Hardware Properties", command=lambda: run_adb_command("shell dumpsys hardware_properties"))
+dumpsys_menu.add_command(label="Location", command=lambda: run_adb_command("shell dumpsys location"))
+dumpsys_menu.add_command(label="Netstats", command=lambda: run_adb_command("shell dumpsys netstats"))
+dumpsys_menu.add_command(label="Phone", command=lambda: run_adb_command("shell dumpsys phone"))
+dumpsys_menu.add_command(label="Power", command=lambda: run_adb_command("shell dumpsys power"))
+dumpsys_menu.add_command(label="Runtime", command=lambda: run_adb_command("shell dumpsys runtime"))
+dumpsys_menu.add_command(label="Settings", command=lambda: run_adb_command("shell dumpsys settings"))
+dumpsys_menu.add_command(label="Stats", command=lambda: run_adb_command("shell dumpsys stats"))
+dumpsys_menu.add_command(label="USB", command=lambda: run_adb_command("shell dumpsys usb"))
+dumpsys_menu.add_command(label="Wi-Fi", command=lambda: run_adb_command("shell dumpsys wifi"))
+
+def show_dumpsys_menu(event):
+    dumpsys_menu.tk_popup(event.x_root, event.y_root)
+
+btn_dumpsys = tk.Button(root, text="Dumpsys", width=25, fg="green")
+btn_dumpsys.pack(pady=10)
+btn_dumpsys.bind("<Button-1>", show_dumpsys_menu)
 
 
 # OTHER--------------------------------------------------------------------------------------------------------
