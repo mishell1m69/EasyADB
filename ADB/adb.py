@@ -123,7 +123,7 @@ def ping_url_prompt():
 
 
 def launch_scrcpy():
-    scrcpy_path = r"adb/scrcpy-win64-v3.3.1/scrcpy.exe" 
+    scrcpy_path = r"scrcpy-win64-v3.3.1\scrcpy.exe" 
     subprocess.Popen(scrcpy_path)
 
 
