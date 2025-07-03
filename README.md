@@ -1,5 +1,5 @@
 
-# EasyADB
+# easyADB
 
 A simple interface to control an USB-connected Android phone trough ADB, automatically launching commands on a simple click rather than just writing them manually. Shizuku command included.
 
