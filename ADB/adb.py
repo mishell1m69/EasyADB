@@ -105,6 +105,7 @@ def open_url_prompt():
     launch_btn = tk.Button(url_window, text="Lancer", command=launch_url)
     launch_btn.pack(pady=5)
 
+
 # Ping an URL --- SPECIFIC TO A BUTTON ---
 def ping_url_prompt():
     # New popup window
@@ -239,7 +240,7 @@ logcat_menu = tk.Menu(root, tearoff=0)
 logcat_menu.add_command(label="Logcat", command=lambda: run_adb_command("logcat"))
 logcat_menu.add_command(label="Logcat to file (txt)", command=lambda: run_adb_command("logcat > logcat_report.txt"))
 logcat_menu.add_command(label="Logcat dump", command=lambda: run_adb_command("logcat -d"))
-logcat_menu.add_command(label="Logcat dump to file (txt)", command=lambda: run_adb_command("logcat -d> logcat_report.txt"))
+logcat_menu.add_command(label="Logcat dump to file (txt)", command=lambda: run_adb_command("logcat -d > logcat_dump_report.txt"))
 logcat_menu.add_command(label="Logcat clear", command=lambda: run_adb_command("logcat -c"))
 logcat_menu.add_command(label="Detect Logcat E (Error)", command=lambda: run_adb_command("logcat *:E"))
 logcat_menu.add_command(label="Detect Logcat F (Fatal)", command=lambda: run_adb_command("logcat *:F"))
@@ -252,28 +253,6 @@ def show_logcat_menu(event):
 btn_logcat = tk.Button(root, text="Logcat", width=25, fg="green")
 btn_logcat.pack(pady=10)
 btn_logcat.bind("<Button-1>", show_logcat_menu)
-
-
-# NETWORK --------------------------------------------------------------------------------------------------------
-# Menu for Network
-network_menu = tk.Menu(root, tearoff=0)
-network_menu.add_command(label="Show IpV4-6/Interfaces", command=lambda: run_adb_command("shell ip a"))
-network_menu.add_command(label="Netstat", command=lambda: run_adb_command("shell dumpsys netstat"))
-network_menu.add_command(label="Ip route", command=lambda: run_adb_command("shell ip route  "))
-network_menu.add_command(label="Dumpsys Wi-Fi", command=lambda: run_adb_command("shell dumpsys wifi"))
-network_menu.add_command(label="Wi-Fi ON", command=lambda: run_adb_command("shell svc wifi enable"))
-network_menu.add_command(label="Wi-Fi OFF", command=lambda: run_adb_command("shell svc wifi disable"))
-network_menu.add_command(label="Data ON", command=lambda: run_adb_command("shell svc data enable"))
-network_menu.add_command(label="Data OFF", command=lambda: run_adb_command("shell svc data disable"))
-network_menu.add_command(label="Show primary DNS", command=lambda: run_adb_command("shell getprop net.dns1"))
-network_menu.add_command(label="Ping URL", command=ping_url_prompt)
-
-def show_network_menu(event):
-    network_menu.tk_popup(event.x_root, event.y_root)
-
-btn_network = tk.Button(root, text="Network", width=25, fg="green")
-btn_network.pack(pady=10)
-btn_network.bind("<Button-1>", show_network_menu)
 
 
 # DUMPSYS --------------------------------------------------------------------------------------------------------
@@ -307,6 +286,28 @@ def show_dumpsys_menu(event):
 btn_dumpsys = tk.Button(root, text="Dumpsys", width=25, fg="green")
 btn_dumpsys.pack(pady=10)
 btn_dumpsys.bind("<Button-1>", show_dumpsys_menu)
+
+
+# NETWORK --------------------------------------------------------------------------------------------------------
+# Menu for Network
+network_menu = tk.Menu(root, tearoff=0)
+network_menu.add_command(label="Show IpV4-6/Interfaces", command=lambda: run_adb_command("shell ip a"))
+network_menu.add_command(label="Netstat", command=lambda: run_adb_command("shell dumpsys netstat"))
+network_menu.add_command(label="Ip route", command=lambda: run_adb_command("shell ip route  "))
+network_menu.add_command(label="Dumpsys Wi-Fi", command=lambda: run_adb_command("shell dumpsys wifi"))
+network_menu.add_command(label="Wi-Fi ON", command=lambda: run_adb_command("shell svc wifi enable"))
+network_menu.add_command(label="Wi-Fi OFF", command=lambda: run_adb_command("shell svc wifi disable"))
+network_menu.add_command(label="Data ON", command=lambda: run_adb_command("shell svc data enable"))
+network_menu.add_command(label="Data OFF", command=lambda: run_adb_command("shell svc data disable"))
+network_menu.add_command(label="Show primary DNS", command=lambda: run_adb_command("shell getprop net.dns1"))
+network_menu.add_command(label="Ping URL", command=ping_url_prompt)
+
+def show_network_menu(event):
+    network_menu.tk_popup(event.x_root, event.y_root)
+
+btn_network = tk.Button(root, text="Network", width=25, fg="green")
+btn_network.pack(pady=10)
+btn_network.bind("<Button-1>", show_network_menu)
 
 
 # OTHER--------------------------------------------------------------------------------------------------------
