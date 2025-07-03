@@ -263,7 +263,7 @@ btn_help.pack(pady=10)
 
 # SCRCPY --------------------------------------------------------------------------------------------------------
 btn_scrcpy = tk.Button(root, text="Lancer scrcpy", width=25, command=launch_scrcpy)
-btn_scrcpy.grid(row=x, column=y, padx=5, pady=5)
+btn_scrcpy.pack(pady=10)
 
 # HELP --------------------------------------------------------------------------------------------------------
 btn_help = tk.Button(root, text="Help", width=25, command=lambda: run_adb_command("help"), fg="blue")
