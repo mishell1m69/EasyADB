@@ -38,4 +38,5 @@ Execute the launcher
 ```bash
   C://../../../../launch.bat
 ```
+OR just simply download the project (.zip) and execute the launcher
 
