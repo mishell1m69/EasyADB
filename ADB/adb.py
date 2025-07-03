@@ -121,6 +121,11 @@ def ping_url_prompt():
     launch_btn.pack(pady=5)
 
 
+def launch_scrcpy():
+    scrcpy_path = r""C:\\ADB\scrcpy-win64-v3.3.1\scrcpy.exe""
+    subprocess.Popen(scrcpy_path)
+
+
 # Stop the current process (equivalent to Ctrl+C)
 def stop_command():
     global current_process
@@ -247,6 +252,10 @@ btn_other.bind("<Button-1>", show_other_menu)
 # SHIZUKU --------------------------------------------------------------------------------------------------------
 btn_help = tk.Button(root, text="Start Shizuku", width=25, command=lambda: run_adb_command("shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh"), fg="purple")
 btn_help.pack(pady=10)
+
+# SCRCPY --------------------------------------------------------------------------------------------------------
+btn_scrcpy = tk.Button(root, text="Lancer scrcpy", width=25, command=launch_scrcpy)
+btn_scrcpy.grid(row=x, column=y, padx=5, pady=5)
 
 # HELP --------------------------------------------------------------------------------------------------------
 btn_help = tk.Button(root, text="Help", width=25, command=lambda: run_adb_command("help"), fg="blue")
