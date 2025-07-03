@@ -262,7 +262,7 @@ btn_help = tk.Button(root, text="Start Shizuku", width=25, command=lambda: run_a
 btn_help.pack(pady=10)
 
 # SCRCPY --------------------------------------------------------------------------------------------------------
-btn_scrcpy = tk.Button(root, text="Lancer scrcpy", width=25, command=launch_scrcpy)
+btn_scrcpy = tk.Button(root, text="SCRCPY", width=25, command=launch_scrcpy, fg="orange")
 btn_scrcpy.pack(pady=10)
 
 # HELP --------------------------------------------------------------------------------------------------------
