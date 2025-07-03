@@ -29,6 +29,7 @@ imagined it.
 import subprocess
 import os
 import tkinter as tk
+from tkinter import simpledialog
 
 
 # __      __     _____  _____          ____  _      ______  _____ 
@@ -43,6 +44,10 @@ import tkinter as tk
 ADB_PATH = os.path.abspath("platform-tools")
 ADB_EXE = os.path.join(ADB_PATH, "adb")
 
+# Path to scrcpy (not used everytime)
+SCRCPY_PATH = os.path.abspath("scrcpy-win64-v3.3.1")
+SCRCPY_EXE = os.path.join(SCRCPY_PATH, "scrcpy")
+
 # Global process (so it can be stopped)
 current_process = None
 
@@ -54,8 +59,9 @@ current_process = None
 # | |    | |__| | |\  | |____   | |   _| || |__| | |\  |____) |
 # |_|     \____/|_| \_|\_____|  |_|  |_____\____/|_| \_|_____/ 
                                                               
-                                                              
-# To execute an ADB command in Powershell
+
+# ADB --------------------------------------------------------------------------------------------------------                                                           
+# --- To execute an ADB command in Powershell
 def run_adb_command(command):
     global current_process
     try:
@@ -66,25 +72,25 @@ def run_adb_command(command):
             out_file = args[args.index(">") + 1]
             logcat_command = args[:args.index(">")]
             with open(out_file, "w", encoding="utf-8") as f:
-                print(f"[INFO] Export de logcat vers {out_file}")
+                print(f"[INFO] Logcat export to {out_file}")
                 current_process = subprocess.Popen([ADB_EXE] + logcat_command, stdout=f, stderr=subprocess.STDOUT)
         else:
             full_command = [ADB_EXE] + args
-            print(f"Exécution : {' '.join(full_command)}")
+            print(f"Executing : {' '.join(full_command)}")
             current_process = subprocess.Popen(full_command)
 
     except Exception as e:
-        print(f"[ERREUR] {e}")
+        print(f"[ERROR] {e}")
 
 
-# Open an URL on the device
+# Open an URL on the device --- SPECIFIC TO A BUTTON ---
 def open_url_prompt():
     # New popup window
     url_window = tk.Toplevel(root)
-    url_window.title("Ouvrir une URL")
+    url_window.title("Open an URL")
     url_window.geometry("400x120")
 
-    tk.Label(url_window, text="Entrez l'URL à ouvrir sur l'appareil :").pack(pady=5)
+    tk.Label(url_window, text="Enter an URL to open on the device:").pack(pady=5)
     
     url_entry = tk.Entry(url_window, width=50)
     url_entry.pack(pady=5)
@@ -99,14 +105,14 @@ def open_url_prompt():
     launch_btn = tk.Button(url_window, text="Lancer", command=launch_url)
     launch_btn.pack(pady=5)
 
-# Ping an URL
+# Ping an URL --- SPECIFIC TO A BUTTON ---
 def ping_url_prompt():
     # New popup window
     url_window = tk.Toplevel(root)
-    url_window.title("Ping une URL")
+    url_window.title("URL Ping")
     url_window.geometry("400x120")
 
-    tk.Label(url_window, text="Entrez l'URL à Ping :").pack(pady=5)
+    tk.Label(url_window, text="Enter an URL to Ping :").pack(pady=5)
     
     url_entry = tk.Entry(url_window, width=50)
     url_entry.pack(pady=5)
@@ -122,17 +128,48 @@ def ping_url_prompt():
     launch_btn.pack(pady=5)
 
 
-def launch_scrcpy():
-    scrcpy_path = r"scrcpy-win64-v3.3.1\scrcpy.exe" 
-    subprocess.Popen(scrcpy_path)
+# SCRCPY --------------------------------------------------------------------------------------------------------
+# --- To execute an scrcpy command in Powershell
+def run_scrcpy_command(command):
+    global current_process
+    try:
+        args = command.strip().split()
+        full_command = [SCRCPY_EXE] + args
+        print(f"Executing : {' '.join(full_command)}")
+        current_process = subprocess.Popen(full_command)
+
+    except Exception as e:
+        print(f"[ERROR] {e}")
 
 
+# Allows the user to control his phone with the mouse --- SPECIFIC TO A BUTTON ---
+def launch_scrcpy_otg_with_input(): 
+    # Asks the user for a serial number trough a dialog box
+    root = tk.Tk()
+    root.withdraw()  # Hides the main window
+    
+    serial = simpledialog.askstring("Serial number", "Enter the serial number of the desired device")
+    
+    if serial:
+        scrcpy_path = os.path.abspath("scrcpy-win64-v3.3.1/scrcpy.exe")
+        try:
+            subprocess.Popen([scrcpy_path, "--otg", "-s", serial])
+            print(f"Launching scrcpy with --otg -s {serial}")
+        except Exception as e:
+            print(f"[ERROR] Unable to launch scrcpy OTG: {e}")
+    else:
+        print("No serial number provided.")
+
+    root.destroy()
+
+
+# STOP/EXIT --------------------------------------------------------------------------------------------------------
 # Stop the current process (equivalent to Ctrl+C)
 def stop_command():
     global current_process
     if current_process and current_process.poll() is None:
         current_process.terminate()
-        print("[INFO] Commande interrompue (équivalent Ctrl+C)")
+        print("[INFO] Interrupted command (equivalent Ctrl+C)")
         current_process = None
 
 
@@ -256,14 +293,25 @@ btn_other.pack(pady=10)
 btn_other.bind("<Button-1>", show_other_menu)
 
 
-# Other commands/buttons
+# SCRCPY--------------------------------------------------------------------------------------------------------
+# Menu for SCRCPY 
+scrcpy_menu = tk.Menu(root, tearoff=0)
+scrcpy_menu.add_command(label="Launch", command=lambda: run_scrcpy_command(""))
+scrcpy_menu.add_command(label="Launch (show touches)", command=lambda: run_scrcpy_command("--show-touches"))
+scrcpy_menu.add_command(label="Control (--otg)", command=launch_scrcpy_otg_with_input)
+
+def show_scrcpy_menu(event):
+    scrcpy_menu.tk_popup(event.x_root, event.y_root)
+
+btn_scrcpy = tk.Button(root, text="SCRCPY", width=25, fg="Orange")
+btn_scrcpy.pack(pady=10)
+btn_scrcpy.bind("<Button-1>", show_scrcpy_menu)
+
+
 # SHIZUKU --------------------------------------------------------------------------------------------------------
 btn_help = tk.Button(root, text="Start Shizuku", width=25, command=lambda: run_adb_command("shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh"), fg="purple")
 btn_help.pack(pady=10)
 
-# SCRCPY --------------------------------------------------------------------------------------------------------
-btn_scrcpy = tk.Button(root, text="SCRCPY", width=25, command=launch_scrcpy, fg="orange")
-btn_scrcpy.pack(pady=10)
 
 # HELP --------------------------------------------------------------------------------------------------------
 btn_help = tk.Button(root, text="Help", width=25, command=lambda: run_adb_command("help"), fg="blue")
