@@ -90,7 +90,7 @@ def open_url_prompt():
     url_window.title("Open an URL")
     url_window.geometry("400x120")
 
-    tk.Label(url_window, text="Enter an URL to open on the device:").pack(pady=5)
+    tk.Label(url_window, text="Enter an URL to open on the device (use https://):").pack(pady=5)
     
     url_entry = tk.Entry(url_window, width=50)
     url_entry.pack(pady=5)
